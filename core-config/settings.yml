@@ -1,0 +1,13 @@
+use_default_settings: true
+
+search:
+  autocomplete: "google"
+  favicon_resolver: "google"
+
+server:
+  secret_key: "@SEARXNG_SECRET@"
+  image_proxy: true
+
+plugins:
+  searx.plugins.infinite_scroll.SXNGPlugin:
+    active: true
