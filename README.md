@@ -10,7 +10,7 @@ A self-hosted, privacy-respecting metasearch engine configured via Docker Compos
 ```text
 searxng/
 ├── .env.example
-├── WSLBackgroundHost.vbs
+├── WSLBackgroundHost.ps1
 ├── docker-compose.yml
 └── core-config/
     └── settings.yml
@@ -98,7 +98,7 @@ http://127.0.0.1:8080
 
 ## Windows Background Persistence (WSL Users Only)
 
-When using WSL, Windows shuts down Linux instances when no active terminal windows remain open. To keep SearXNG running seamlessly in the background, use the provided `WSLBackgroundHost.vbs` script alongside Windows Task Scheduler.
+When using WSL, Windows shuts down Linux instances when no active terminal windows remain open. To keep SearXNG running seamlessly in the background, use the provided `WSLBackgroundHost.ps1` script alongside Windows Task Scheduler.
 
 ### Setup Task Scheduler in Windows
 
@@ -106,6 +106,7 @@ When using WSL, Windows shuts down Linux instances when no active terminal windo
 2. Click **Create Basic Task...** on the right-side panel.
 3. **Trigger:** Select **When I log on**.
 4. **Action:** Select **Start a program**.
-5. **Program/script:** Enter `wscript.exe`
-6. **Add arguments:** Enter the path to the repository's VBScript (e.g., `"C:\path\to\searxng\WSLBackgroundHost.vbs"`).
-7. Save and finish.
+5. **Program/script:** Enter `powershell.exe`
+6. **Add arguments:** Enter `-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\path\to\script\WSLBackgroundHost.ps1"`
+7. **Start in:** `C:\path\to\script\`
+8. Save and finish.
