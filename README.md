@@ -9,11 +9,12 @@ A self-hosted, privacy-respecting metasearch engine configured via Docker Compos
 
 ```text
 searxng/
+├── core-config/
+│   └── settings.yml
 ├── .env.example
-├── WSLBackgroundHost.ps1
 ├── docker-compose.yml
-└── core-config/
-    └── settings.yml
+├── init-env.sh
+└── WSLBackgroundHost.ps1
 ```
 
 ## Prerequisites & Docker Installation
@@ -46,29 +47,28 @@ sudo systemctl enable --now docker.service
 
 ## Environment Setup & Permissions
 
-### 1. Configure `.env`
+### 1. Automated Setup via `init-env.sh`
 
-Copy `.env.example` to `.env`:
+Instead of manually creating `.env` and generating keys, use the provided initialization script. It validates required template files, prevents accidental overwrites, and generates a 32-byte hexadecimal secret key automatically:
+
+```bash
+# Make the script executable (if not already)
+chmod +x init-env.sh
+
+# Run the setup script
+./init-env.sh
+```
+
+Alternatively, to set up the environment manually:
 
 ```bash
 cp .env.example .env
-```
-
-Generate a random 32-byte secret key using OpenSSL:
-
-```bash
-openssl rand -hex 32
-```
-
-Open `.env` in your editor and assign the generated key to `SEARXNG_SECRET`:
-
-```bash
-$EDITOR .env
+sed -i "s/^SEARXNG_SECRET=.*/SEARXNG_SECRET=$(openssl rand -hex 32)/" .env
 ```
 
 ### 2. Set Configuration Permissions
 
-SearXNG runs inside the container under a non-root UID, which can cause the local `./core-config` directory to be reassigned to fallback user IDs (such as `systemd-coredump`) upon startup, leading to permission errors.
+SearXNG runs inside the container under a non-root UID, which can cause the local `./core-config` directory to be reassigned to fallback user IDs upon startup, leading to permission errors.
 
 Set appropriate read/write access on the directory before starting the stack:
 
@@ -90,11 +90,18 @@ cd /path/to/searxng
 docker compose up -d
 ```
 
+> **Services Deployed:**
+>
+> - `core`: SearXNG search web application.
+> - `valkey`: High-performance key-value cache and database (replacing Redis).
+
 3. Open your browser and navigate to:
 
 ```text
-http://127.0.0.1:8080
+http://127.0.0.1:8888
 ```
+
+_(Default host port configured via `SEARXNG_PORT` in `.env`)_
 
 ## Windows Background Persistence (WSL Users Only)
 

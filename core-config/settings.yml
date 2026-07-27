@@ -7,6 +7,14 @@ search:
 server:
   image_proxy: true
 
+outgoing:
+  max_request_timeout: 3.0
+
 plugins:
   searx.plugins.infinite_scroll.SXNGPlugin:
     active: true
+
+categories_as_tabs:
+  general:
+  images:
+  videos:
