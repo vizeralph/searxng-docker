@@ -12,9 +12,9 @@ searxng/
 ├── core-config/
 │   └── settings.yml
 ├── .env.example
+├── WSLBackgroundHost.ps1
 ├── docker-compose.yml
-├── init-env.sh
-└── WSLBackgroundHost.ps1
+└── init-env.sh
 ```
 
 ## Prerequisites & Docker Installation

@@ -10,8 +10,8 @@ set -o pipefail
 ###########
 # GLOBALS #
 ###########
-ENV_FILE=".env"
-EXAMPLE_FILE=".env.example"
+readonly ENV_FILE="${ENV_FILE:-.env}"
+readonly EXAMPLE_FILE="${EXAMPLE_FILE:-.env.example}"
 
 #############
 # FUNCTIONS #
